@@ -99,9 +99,12 @@ const subtotal = (item: CartItem) => {
   const discountedPrice = total >= -300 ? total * 0.9 : total;
 
 
-  /*todo skal vise det man sparer ved at købe over 300DKK
-  const discountedPriceSavings = cart.reduce((acc, item) => acc +;
-  */
+
+  const discountedSavings = (item: CartItem) => {
+  return subtotal(item) - discountedPrice
+  };
+
+const totalDiscountedSavings = cart.reduce((acc, item) => acc + discountedSavings(item), 0);
 
   const tax = (item: CartItem) => {
     const taxRate = 0.25; // 25% moms
@@ -110,11 +113,11 @@ const subtotal = (item: CartItem) => {
 
   const totalTax = cart.reduce((acc, item) => acc + tax(item), 0);
 
-  //*todo tilføj så den viser pris uden moms
+  /*todo tilføj så den viser pris uden moms
   const subtotalWithoutTax = (item: CartItem) => {
     return subtotal(item) - tax(item);
   };
-
+*/
 
 const validateZipCode = async (zipCode: string): Promise<boolean> => {
   if (!zipCode) {
@@ -203,10 +206,10 @@ const handleZipCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           <td colSpan={3}>Moms udgør</td>
           <td>{totalTax.toFixed(2)} DKK</td>
         </tr>
-      {discountedPrice > 300 && (
+      {discountedPrice > 0 && (
         <tr>
           <td colSpan={3}>Da du har købt for over 300DKK sparer du</td>
-          <td>{discountedPrice} DKK</td>
+          <td>{totalDiscountedSavings} DKK</td>
         </tr>
       )}
       </tbody>
