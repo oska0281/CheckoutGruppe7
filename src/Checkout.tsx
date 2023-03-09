@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './checkout.css';
 import itemsData from './products.json';
 
-
 type Item = {
   id: string;
   name: string;
@@ -91,13 +90,18 @@ const subtotal = (item: CartItem) => {
 };
   const total = cart.reduce((acc, item) => acc + subtotal(item), 0);
 
-  const totalSavings = cart.reduce((acc, item) => acc + (item.rebateAmount ?? 0), 0);
+  const totalSavingsQuantity = cart.reduce((acc, item) => acc + (item.rebateAmount ?? 0), 0);
 
   const removeAllItems = () => {
     setCart([]);
   };
 
-  const discountedPrice = total >= 300 ? total * 0.9 : total;
+  const discountedPrice = total >= -300 ? total * 0.9 : total;
+
+
+  /*todo skal vise det man sparer ved at købe over 300DKK
+  const discountedPriceSavings = cart.reduce((acc, item) => acc +;
+  */
 
   const tax = (item: CartItem) => {
     const taxRate = 0.25; // 25% moms
@@ -188,17 +192,23 @@ const handleZipCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         <td colSpan={3}>Subtotal inkl. moms</td>
         <td><strong>{discountedPrice.toFixed(2)} DKK</strong></td>
        </tr>
-        {totalSavings > 0 && (
+        {totalSavingsQuantity > 0 && (
           <tr>
             <td colSpan={3}>Penge sparet ved mængde-tilbud</td>
-            <td>{totalSavings} DKK</td>
+            <td>{totalSavingsQuantity} DKK</td>
           </tr>
+
         )}
         <tr>
           <td colSpan={3}>Moms udgør</td>
           <td>{totalTax.toFixed(2)} DKK</td>
         </tr>
-
+      {discountedPrice > 300 && (
+        <tr>
+          <td colSpan={3}>Da du har købt for over 300DKK sparer du</td>
+          <td>{discountedPrice} DKK</td>
+        </tr>
+      )}
       </tbody>
     </table>
     <div className="actions">
