@@ -1,5 +1,4 @@
 .checkout-container {
-  background-color: #FFFEF2;
   padding: 24px;
 }
 table {
@@ -9,18 +8,35 @@ table {
   table-layout: fixed;
 
 }
+.checkout-container {
+  margin: 50px;
+}
+
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cart-table th,
+.cart-table td {
+  padding: 10px 10px 10px 100px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.cart-table th {
+  background-color: #f2f2f2;
+}
 
 th,
 td {
-  border: 1px solid #FFFEF2;
   padding: 20px;
   text-align: left;
-  font-size: 24px;
+  font-size: 15px;
   color: #212121
 }
 
 th {
-  background-color: #FFFEF2;
   font-weight: bold;
 }
 
@@ -120,10 +136,13 @@ button[type="submit"]:hover {
   font-weight: bold;
 }
 
+
 .cart-summary-row.savings {
   color: green;
   font-style: italic;
 }
+
+
 
 button {
   background-color: #4CAF50;

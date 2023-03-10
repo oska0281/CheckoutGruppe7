@@ -164,7 +164,7 @@ const handleZipCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
   return (
   <div className="checkout-container">
-    <h1>Vareliste</h1>
+    <h1>Din kurv</h1>
     <table className="cart-table">
       <thead>
         <tr>
@@ -190,7 +190,7 @@ const handleZipCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   </div>
   {item.rebateQuantity && item.rebatePercent && (
     <div className="rebate-message">
-      Tilføj {item.rebateQuantity - (cart.find((i) => i.id === item.id)?.quantity ?? 0)} mere for at blive kvalificeret til {item.rebatePercent}% rabat
+      Tilføj {item.rebateQuantity - (cart.find((i) => i.id === item.id)?.quantity ?? 0)} mere for {item.rebatePercent}% rabat
       {item.upsellProductId && cart.find((i) => i.id === item.id)?.quantity! >= item.rebateQuantity! && itemsData.find((i) => i.id === item.upsellProductId) && (
         <button onClick={() => addToCart(item.upsellProductId!)}>Tilføj eventuelt {itemsData.find((i) => i.id === item.upsellProductId!)?.name}</button>
       )}
