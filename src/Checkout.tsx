@@ -19,7 +19,7 @@ type CartItem = Item & {
   rebateAmount?: number;
 };
 
-//skal bruges til adressetjek
+/*skal bruges til adressetjek
 type Address = {
   country: string;
   zipCode: string;
@@ -32,7 +32,7 @@ type Address = {
   companyName: string;
   companyVATNumber: string;
 };
-
+*/
 const Checkout = (): JSX.Element => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [deliveryAddress, setDeliveryAddress] = useState({
@@ -295,7 +295,8 @@ const handleZipCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   </label>
   <label>
     Postnummer
-    <input type="text" name="billingZipcode" required />
+     <input type="text" name="zipcode" required onChange={handleZipCodeChange} />
+    {zipCodeError && <span className="error">Ugyldigt postnummer</span>}
   </label>
   <label>
     By
