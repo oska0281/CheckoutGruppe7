@@ -99,7 +99,7 @@ const subtotal = (item: CartItem) => {
   const discountedPrice = total >= -300 ? total * 0.9 : total;
 
 
-
+  /*todo skal gøres så kun trækker det fra når der er 300 eller over */
   const discountedSavings = (item: CartItem) => {
   return subtotal(item) - discountedPrice
   };
@@ -146,7 +146,6 @@ const handleNext = async () => {
 const handleZipCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   setDeliveryAddress((prevState) => ({ ...prevState, zipCode: e.target.value }));
 };
-
 
   return (
   <div className="checkout-container">
@@ -297,7 +296,6 @@ const handleZipCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
          Næste
        </button>
   </div>
-
   );
 };
 
