@@ -18,6 +18,8 @@ type CartItem = Item & {
   rebatePercent?: number;
   rebateAmount?: number;
 };
+
+//skal bruges til adressetjek
 type Address = {
   country: string;
   zipCode: string;
@@ -46,7 +48,7 @@ const Checkout = (): JSX.Element => {
     companyVATNumber: '',
     });
 
-
+//tilføjer vare til cart
   const addToCart = (itemId: string) => {
     const item = itemsData.find((i) => i.id === itemId);
     const index = cart.findIndex((i) => i.id === itemId);
@@ -60,6 +62,8 @@ const Checkout = (): JSX.Element => {
     }
   };
 
+//til at fjerne fra kurv
+  //fjerne 1 vare
   const removeOne = (itemId: string) => {
     const index = cart.findIndex((i) => i.id === itemId);
 
@@ -71,14 +75,19 @@ const Checkout = (): JSX.Element => {
       setCart(newCart);
     }
   };
-
+  //fjerne varen fuldstændigt
   const removeItem = (itemId: string) => {
     const newCart = cart.filter((i) => i.id !== itemId);
     setCart(newCart);
   };
+  //fjerner alle varene
+    const removeAllItems = () => {
+    setCart([]);
+  };
 
+
+//udregner subtotalen
 const subtotal = (item: CartItem) => {
-
   if (item.rebateQuantity && item.quantity >= item.rebateQuantity) {
     const discount = item.price * item.quantity * (item.rebatePercent! / 100);
     item.rebateAmount = discount;
@@ -88,29 +97,31 @@ const subtotal = (item: CartItem) => {
     return item.price * item.quantity;
   }
 };
-  const total = cart.reduce((acc, item) => acc + subtotal(item), 0);
 
+//udregner total
+  const total = cart.reduce((acc, item) => acc + subtotal(item), 0);
+//udregner hvor meget man sparer ved mængdetilbud
   const totalSavingsQuantity = cart.reduce((acc, item) => acc + (item.rebateAmount ?? 0), 0);
 
-  const removeAllItems = () => {
-    setCart([]);
-  };
 
+/*todo skal gøres så kun trækker det fra når der er 300 eller over */
+  //udregner den discountede pris på 10% rabat hvis totalen er over 300
   const discountedPrice = total >= -300 ? total * 0.9 : total;
 
-
-  /*todo skal gøres så kun trækker det fra når der er 300 eller over */
+  //udregner det man sparer ved at købe over 300
+  /*Todo er stadig WIP */
   const discountedSavings = (item: CartItem) => {
-  return subtotal(item) - discountedPrice
+  return total - discountedPrice
   };
 
-const totalDiscountedSavings = cart.reduce((acc, item) => acc + discountedSavings(item), 0);
+  const totalDiscountedSavings = cart.reduce((acc, item) => acc + discountedSavings(item), 0);
 
+//udregner moms
   const tax = (item: CartItem) => {
     const taxRate = 0.25; // 25% moms
     return subtotal(item) * taxRate;
   };
-
+  //den samlede moms af total
   const totalTax = cart.reduce((acc, item) => acc + tax(item), 0);
 
   /*todo tilføj så den viser pris uden moms
@@ -119,6 +130,8 @@ const totalDiscountedSavings = cart.reduce((acc, item) => acc + discountedSaving
   };
 */
 
+
+//zip tjekker
 const validateZipCode = async (zipCode: string): Promise<boolean> => {
   if (!zipCode) {
     return false;
@@ -146,6 +159,8 @@ const handleNext = async () => {
 const handleZipCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   setDeliveryAddress((prevState) => ({ ...prevState, zipCode: e.target.value }));
 };
+
+
 
   return (
   <div className="checkout-container">
