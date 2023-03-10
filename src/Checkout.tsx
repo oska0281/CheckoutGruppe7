@@ -75,7 +75,7 @@ const Checkout = (): JSX.Element => {
       setCart(newCart);
     }
   };
-  //fjerne varen fuldstændigt
+  //fjerne vare
   const removeItem = (itemId: string) => {
     const newCart = cart.filter((i) => i.id !== itemId);
     setCart(newCart);
