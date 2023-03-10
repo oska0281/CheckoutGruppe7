@@ -4,8 +4,28 @@ import Checkout from './Checkout';
 function App() {
   return (
     <div>
-      <h1>Velkommen til denne butik</h1>
-      <Checkout />
+
+
+        <header>
+            <div className="header-text">
+                <h1 className="shopnavn">MyStore</h1>
+                <p className="Tilbage-til-butikken">Tilbage til butikken</p>
+            </div>
+
+
+            <div>
+                <p className="Levering">Gratis levering på alle ordrer over 499,-</p>
+                <p className="Log-ind">Log ind</p>
+            </div>
+
+
+
+
+
+        </header>
+
+
+        <Checkout />
     </div>
   );
 }
