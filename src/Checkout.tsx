@@ -195,6 +195,7 @@ const Checkout = (): JSX.Element => {
                   </div>
                   {(item.rebateQuantity && item.rebatePercent) && (
                        <div className="rebate-message">
+
                                     {cart.find((i) => i.id === item.id)?.quantity === 0 && cart.length > 0 ? (
                                         <>
                                             Tilføj {item.rebateQuantity} mere for {item.rebatePercent}% rabat
