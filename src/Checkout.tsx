@@ -135,7 +135,7 @@ const Checkout = (): JSX.Element => {
 */
 
 
-//zip tjekker
+//zip tjekker todo gør så der også bliver sat zip kode ind automatisk
   const validateZipCode = async (zipCode: string): Promise<boolean> => {
     if (!zipCode) {
       return false;
