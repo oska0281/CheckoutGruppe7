@@ -50,18 +50,24 @@ const Checkout = (): JSX.Element => {
 
 //tilføjer vare til cart
   const addToCart = (itemId: string) => {
-    const item = itemsData.find((i) => i.id === itemId);
-    const index = cart.findIndex((i) => i.id === itemId);
+  const item = itemsData.find((i) => i.id === itemId);
+  const index = cart.findIndex((i) => i.id === itemId);
 
-    if (index === -1) {
-      setCart([...cart, { ...item!, quantity: 1 }]);
-    } else {
-      const newCart = [...cart];
-      newCart[index].quantity += 1;
-      setCart(newCart);
+  if (index === -1) {
+    setCart([...cart, { ...item!, quantity: 1 }]);
+  } else {
+    const newCart = [...cart];
+    const currentItem = newCart[index];
+    currentItem.quantity += 1;
+    if (
+      currentItem.rebateQuantity &&
+      currentItem.quantity < currentItem.rebateQuantity
+    ) {
+      currentItem.rebateAmount = 0;
     }
-  };
-
+    setCart(newCart);
+  }
+};
 //til at fjerne fra kurv
   //fjerne 1 vare
   const removeOne = (itemId: string) => {
@@ -182,18 +188,26 @@ const handleZipCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
     </td>
     <td>{item.price} {item.currency}</td>
-    <td className="quantity-cell">
+  <td className="quantity-cell">
   <div className="quantity-buttons">
     <button onClick={() => addToCart(item.id)}>+</button>
     <span>{cart.find((i) => i.id === item.id)?.quantity ?? 0}</span>
     <button onClick={() => removeOne(item.id)}>-</button>
   </div>
-  {item.rebateQuantity && item.rebatePercent && (
+  {(item.rebateQuantity && item.rebatePercent) && (
     <div className="rebate-message">
-      Tilføj {item.rebateQuantity - (cart.find((i) => i.id === item.id)?.quantity ?? 0)} mere for {item.rebatePercent}% rabat
-      {item.upsellProductId && cart.find((i) => i.id === item.id)?.quantity! >= item.rebateQuantity! && itemsData.find((i) => i.id === item.upsellProductId) && (
-        <button onClick={() => addToCart(item.upsellProductId!)}>Tilføj eventuelt {itemsData.find((i) => i.id === item.upsellProductId!)?.name}</button>
-      )}
+      {cart.find((i) => i.id === item.id)?.quantity === 0 ? (
+        <>
+          Tilføj {item.rebateQuantity} mere for {item.rebatePercent}% rabat
+          {item.upsellProductId && itemsData.find((i) => i.id === item.upsellProductId) && (
+            <button onClick={() => addToCart(item.upsellProductId!)}>Tilføj eventuelt {itemsData.find((i) => i.id === item.upsellProductId!)?.name}</button>
+          )}
+        </>
+      ) : (cart.find((i) => i.id === item.id)?.quantity! < item.rebateQuantity! ? (
+          `Tilføj ${item.rebateQuantity - cart.find((i) => i.id === item.id)!.quantity} mere for ${item.rebatePercent}% rabat`
+        ) : (
+          `${item.rebateQuantity}% rabat er tilføjet`
+        ))}
     </div>
   )}
   <button className="remove-button" onClick={() => removeItem(item.id)}>Fjern</button>
