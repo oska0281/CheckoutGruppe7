@@ -164,7 +164,7 @@ const Checkout = (): JSX.Element => {
     setDeliveryAddress((prevState) => ({...prevState, zipCode: e.target.value}));
   };
 
-
+//Todo til render gør måske så indtast af navn mm. foregår på ny side
   return (
       <div className="checkout-container">
         <h1>Din kurv</h1>
