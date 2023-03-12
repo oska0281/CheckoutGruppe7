@@ -110,12 +110,10 @@ const Checkout = (): JSX.Element => {
     const totalSavingsQuantity = cart.reduce((acc, item) => acc + (item.rebateAmount ?? 0), 0);
 
 
-    /*todo skal gøres så kun trækker det fra når der er 300 eller over */
     //udregner den discountede pris på 10% rabat hvis totalen er over 300
     const discountedPrice = total >= 300 ? total * 0.9 : total;
 
     //udregner det man sparer ved at købe over 300
-    /*Todo er stadig WIP */
     const discountedSavings = (item: CartItem) => {
         return total - discountedPrice
     };
