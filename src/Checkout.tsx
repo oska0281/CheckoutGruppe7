@@ -106,7 +106,7 @@ const subtotal = (item: CartItem) => {
 
 /*todo skal gøres så kun trækker det fra når der er 300 eller over */
   //udregner den discountede pris på 10% rabat hvis totalen er over 300
-  const discountedPrice = total >= -300 ? total * 0.9 : total;
+  const discountedPrice = total >= 300 ? total * 0.9 : total;
 
   //udregner det man sparer ved at købe over 300
   /*Todo er stadig WIP */
@@ -220,10 +220,10 @@ const handleZipCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           <td colSpan={3}>Moms udgør</td>
           <td>{totalTax.toFixed(2)} DKK</td>
         </tr>
-      {discountedPrice > 0 && (
-        <tr>
-          <td colSpan={3}>Da du har købt for over 300DKK sparer du</td>
-          <td>{totalDiscountedSavings} DKK</td>
+      {discountedPrice < total && (
+    <tr>
+      <td colSpan={3}>Da du har købt for over 300DKK sparer du</td>
+      <td>{totalDiscountedSavings.toFixed(2)} DKK</td>
         </tr>
       )}
       </tbody>
