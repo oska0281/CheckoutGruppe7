@@ -1,33 +1,101 @@
+
+
+
 .checkout-container {
-  background-color: #FFFEF2;
-  padding: 24px;
+
 }
+
+
+
+header {
+  display: flex;
+  height: 130px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+
+.shopnavn {
+  font-family: Arial;
+  font-size: 35px;
+  font-weight: bold;
+  color: #000000;
+  margin-left: 70px;
+}
+
+.Tilbage-til-butikken {
+  margin-top: 0px;
+  margin-left: 50px;
+  padding-top: 0px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.Levering {
+  padding-left: 700px;
+  padding-top: 10px;
+}
+
+.Log-ind{
+  padding-top: 30px;
+  padding-left: 900px;
+  text-decoration: underline;
+  cursor: pointer
+}
+
+
+
+
+.checkout-container {
+  margin: 50px;
+}
+
+
 table {
   border-collapse: collapse;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
   table-layout: fixed;
+  background-color: #fff;
+
+}
+
+
+
+.cart-table th,
+.cart-table td {
+  align-items: center;
+  justify-content: center;
+  padding: 10px 10px 10px 100px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.cart-table th {
+  background-color: #f2f2f2;
+  justify-content: center;
 
 }
 
 th,
 td {
-  border: 1px solid #FFFEF2;
   padding: 20px;
-  text-align: left;
-  font-size: 24px;
+  justify-content: center;
+  font-size: 15px;
   color: #212121
 }
 
 th {
-  background-color: #FFFEF2;
   font-weight: bold;
+
 }
 
 td.quantity-cell {
   text-align: center;
   vertical-align: middle;
 }
+
+
 
 .quantity-buttons {
   display: flex;
@@ -45,6 +113,8 @@ td.quantity-cell {
   cursor: pointer;
   border-radius: 4px;
 }
+
+
 
 .quantity-buttons button:hover {
   background-color: #ddd;
@@ -120,10 +190,13 @@ button[type="submit"]:hover {
   font-weight: bold;
 }
 
+
 .cart-summary-row.savings {
   color: green;
   font-style: italic;
 }
+
+
 
 button {
   background-color: #4CAF50;
@@ -149,10 +222,7 @@ button:disabled {
   cursor: not-allowed;
 }
 
-h1 {
-  margin-bottom: 20px;
-  font-size: 28px;
-}
+
 
 .no-margins {
   margin: 0;
