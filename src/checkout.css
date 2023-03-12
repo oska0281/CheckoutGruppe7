@@ -32,16 +32,17 @@ header {
 }
 
 .Levering {
-  padding-left: 700px;
-  padding-top: 10px;
+  text-align: center;
 }
 
+
 .Log-ind{
-  padding-top: 30px;
-  padding-left: 900px;
-  text-decoration: underline;
-  cursor: pointer
+  padding-left: 1200px;
+  text-decoration: none;
+  cursor: pointer;
 }
+
+
 
 
 
