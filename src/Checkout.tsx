@@ -260,7 +260,7 @@ const Checkout = (): JSX.Element => {
                 </label>
                 <label>
                     Telefon
-                    <input type="tel" name="phone" required/>
+                    <p>+45 <input type="tel" name="phone" placeholder='12 34 56 78' maxLength={11} minLength={8} required/></p>
                 </label>
                 <label>
                     E-mail
