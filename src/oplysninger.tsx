@@ -1,40 +1,11 @@
 import React, { useState } from 'react';
-import './oplysninger.css.css';
+import './oplysninger.css';
 import itemsData from './products.json';
 
-type Item = {
-  id: string;
-  name: string;
-  price: number;
-  currency: string;
-  rebateQuantity?: number;
-  rebatePercent?: number;
-  upsellProductId?: string | null;
-};
 
-type CartItem = Item & {
-  quantity: number;
-  rebateQuantity?: number;
-  rebatePercent?: number;
-  rebateAmount?: number;
-};
 
-/*skal bruges til adressetjek
-type Address = {
-  country: string;
-  zipCode: string;
-  city: string;
-  addressLine1: string;
-  addressLine2: string;
-  name: string;
-  phone: string;
-  email: string;
-  companyName: string;
-  companyVATNumber: string;
-};
-*/
-const Checkout = (): JSX.Element => {
-  const [cart, setCart] = useState<CartItem[]>([]);
+
+const oplysninger = (): JSX.Element => {
   const [deliveryAddress, setDeliveryAddress] = useState({
     country: 'Denmark',
     zipCode: '',
@@ -47,88 +18,6 @@ const Checkout = (): JSX.Element => {
     companyName: '',
     companyVATNumber: '',
     });
-
-//tilføjer vare til cart
-  const addToCart = (itemId: string) => {
-    const item = itemsData.find((i) => i.id === itemId);
-    const index = cart.findIndex((i) => i.id === itemId);
-
-    if (index === -1) {
-      setCart([...cart, { ...item!, quantity: 1 }]);
-    } else {
-      const newCart = [...cart];
-      newCart[index].quantity += 1;
-      setCart(newCart);
-    }
-  };
-
-//til at fjerne fra kurv
-  //fjerne 1 vare
-  const removeOne = (itemId: string) => {
-    const index = cart.findIndex((i) => i.id === itemId);
-
-    if (cart[index].quantity === 1) {
-      setCart(cart.filter((i) => i.id !== itemId));
-    } else {
-      const newCart = [...cart];
-      newCart[index].quantity -= 1;
-      setCart(newCart);
-    }
-  };
-  //fjerne vare
-  const removeItem = (itemId: string) => {
-    const newCart = cart.filter((i) => i.id !== itemId);
-    setCart(newCart);
-  };
-  //fjerner alle varene
-    const removeAllItems = () => {
-    setCart([]);
-  };
-
-
-//udregner subtotalen
-const subtotal = (item: CartItem) => {
-  if (item.rebateQuantity && item.quantity >= item.rebateQuantity) {
-    const discount = item.price * item.quantity * (item.rebatePercent! / 100);
-    item.rebateAmount = discount;
-    return item.price * item.quantity - discount;
-  } else {
-    item.rebateAmount = 0;
-    return item.price * item.quantity;
-  }
-};
-
-//udregner total
-  const total = cart.reduce((acc, item) => acc + subtotal(item), 0);
-//udregner hvor meget man sparer ved mængdetilbud
-  const totalSavingsQuantity = cart.reduce((acc, item) => acc + (item.rebateAmount ?? 0), 0);
-
-
-/*todo skal gøres så kun trækker det fra når der er 300 eller over */
-  //udregner den discountede pris på 10% rabat hvis totalen er over 300
-  const discountedPrice = total >= -300 ? total * 0.9 : total;
-
-  //udregner det man sparer ved at købe over 300
-  /*Todo er stadig WIP */
-  const discountedSavings = (item: CartItem) => {
-  return total - discountedPrice
-  };
-
-  const totalDiscountedSavings = cart.reduce((acc, item) => acc + discountedSavings(item), 0);
-
-//udregner moms
-  const tax = (item: CartItem) => {
-    const taxRate = 0.25; // 25% moms
-    return subtotal(item) * taxRate;
-  };
-  //den samlede moms af total
-  const totalTax = cart.reduce((acc, item) => acc + tax(item), 0);
-
-  /*todo tilføj så den viser pris uden moms
-  const subtotalWithoutTax = (item: CartItem) => {
-    return subtotal(item) - tax(item);
-  };
-*/
 
 
 
@@ -165,78 +54,7 @@ const handleZipCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
 
   return (
-  <div className="checkout-container">
-    <h1>Din kurv</h1>
-    <table className="cart-table">
-      <thead>
-        <tr>
-          <th>Navn</th>
-          <th>Pris</th>
-          <th>Mængde</th>
-          <th>Subtotal</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>{itemsData.map((item) => (
-  <tr key={item.id}>
-    <td>
-      {item.name}
-
-    </td>
-    <td>{item.price} {item.currency}</td>
-    <td className="quantity-cell">
-  <div className="quantity-buttons">
-    <button onClick={() => addToCart(item.id)}>+</button>
-    <span>{cart.find((i) => i.id === item.id)?.quantity ?? 0}</span>
-    <button onClick={() => removeOne(item.id)}>-</button>
-  </div>
-  {item.rebateQuantity && item.rebatePercent && (
-    <div className="rebate-message">
-      Tilføj {item.rebateQuantity - (cart.find((i) => i.id === item.id)?.quantity ?? 0)} mere for {item.rebatePercent}% rabat
-      {item.upsellProductId && cart.find((i) => i.id === item.id)?.quantity! >= item.rebateQuantity! && itemsData.find((i) => i.id === item.upsellProductId) && (
-        <button onClick={() => addToCart(item.upsellProductId!)}>Tilføj eventuelt {itemsData.find((i) => i.id === item.upsellProductId!)?.name}</button>
-      )}
-    </div>
-  )}
-  <button className="remove-button" onClick={() => removeItem(item.id)}>Fjern</button>
-</td>
-    <td>
-      {cart.find((i) => i.id === item.id) &&
-        (subtotal(cart.find((i) => i.id === item.id)!) ?? item)}{" "}
-      {item.currency}
-    </td>
-  </tr>
-))}
-       <tr>
-        <td colSpan={3}>Subtotal inkl. moms</td>
-        <td><strong>{discountedPrice.toFixed(2)} DKK</strong></td>
-       </tr>
-        {totalSavingsQuantity > 0 && (
-          <tr>
-            <td colSpan={3}>Penge sparet ved mængde-tilbud</td>
-            <td>{totalSavingsQuantity} DKK</td>
-          </tr>
-
-        )}
-        <tr>
-          <td colSpan={3}>Moms udgør</td>
-          <td>{totalTax.toFixed(2)} DKK</td>
-        </tr>
-      {discountedPrice > 0 && (
-        <tr>
-          <td colSpan={3}>Da du har købt for over 300DKK sparer du</td>
-          <td>{totalDiscountedSavings} DKK</td>
-        </tr>
-      )}
-      </tbody>
-    </table>
-    <div className="actions">
-      {cart.length > 0 && (
-        <button className="clear-button" onClick={removeAllItems}>
-          Fjern alle varer
-        </button>
-      )}
-    </div>
+  <div className="oplysninger-container">
 
     <button className="næste-knap"><a href="oplysninger.html">Næste</a></button>
 
@@ -320,6 +138,6 @@ const handleZipCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   );
 };
 
-export default Checkout;
+export default oplysninger;
 
 

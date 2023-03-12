@@ -252,6 +252,10 @@ const Checkout = (): JSX.Element => {
                     </button>
                 )}
             </div>
+
+            <button><a href="public/oplysninger.html">Go to Page 2</a></button>
+
+
             <form>
                 <h2>Leveringsadresse</h2>
                 <label>
