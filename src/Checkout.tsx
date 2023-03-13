@@ -254,7 +254,8 @@ const Checkout = (): JSX.Element => {
                 </label>
                 <label>
                     E-mail
-                    <input type="email" name="email" placeholder='email@email.com' pattern='^\S+@\S+\.\S+$' required/>
+                    <input type="email" name="email" placeholder='email@email.com'
+                           pattern='^\S+@\S+\.\S+$' required/>
                 </label>
                 <label>
                     Adresse 1
@@ -291,7 +292,8 @@ const Checkout = (): JSX.Element => {
                 </label>
                 <label>
                     E-mail
-                    <input type="email" name="email" placeholder='email@email.com' pattern='^\S+@\S+\.\S+$' required/>
+                    <input type="email" name="email" placeholder='email@email.com'
+                           pattern='^\S+@\S+\.\S+$' required/>
                 </label>
                 <label>
                     Adresse 1
