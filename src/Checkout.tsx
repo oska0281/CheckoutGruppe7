@@ -166,10 +166,11 @@ const Checkout = (): JSX.Element => {
 
 //TODO til render gør måske så indtast af navn mm. foregår på ny side
   //TODO istedet for email checker med tegn så brug email checker api fx "mailboxlayer"
+  //TODO evt en side når man går fra første side til næste der forslår nye produkter ift hvad man har købt eller hakket af
   return (
       <div className="checkout-container">
         <h1>Din kurv</h1>
-        <table className="cart-table">
+      <table className="cart-table checkout-table">
           <thead>
           <tr>
             <th>Navn</th>
@@ -215,29 +216,58 @@ const Checkout = (): JSX.Element => {
                 </td>
               </tr>
           ))}
-          <tr>
-            <td colSpan={3}>Subtotal inkl. moms</td>
-            <td><strong>{discountedPrice.toFixed(2)} DKK</strong></td>
-          </tr>
-          {totalSavingsQuantity > 0 && (
-              <tr>
-                <td colSpan={3}>Penge sparet ved mængde-tilbud</td>
-                <td>{totalSavingsQuantity} DKK</td>
-              </tr>
-
-          )}
-          <tr>
-            <td colSpan={3}>Moms udgør</td>
-            <td>{totalTax.toFixed(2)} DKK</td>
-          </tr>
-          {discountedPrice < total && (
-              <tr>
-                <td colSpan={3}>Da du har købt for over 300DKK sparer du</td>
-                <td>{totalDiscountedSavings.toFixed(2)} DKK</td>
-              </tr>
-          )}
           </tbody>
         </table>
+
+
+
+ <div className="summary-table-container">
+    <table className="cart-table summary-table">
+  <thead>
+    <tr>
+      <th>Produkter</th>
+      <th>Antal</th>
+      <th>Pris</th>
+    </tr>
+  </thead>
+  <tbody>
+    {cart.map((item) => (
+      <tr key={item.id}>
+        <td>{item.name}</td>
+        <td>{item.quantity}</td>
+        <td>{subtotal(item).toFixed(2)} DKK</td>
+      </tr>
+    ))}
+    <tr>
+      <td>Subtotal inkl. moms</td>
+      <td></td>
+      <td><strong>{discountedPrice.toFixed(2)} DKK</strong></td>
+    </tr>
+    {totalSavingsQuantity > 0 && (
+      <tr>
+        <td>Penge sparet ved mængde-tilbud</td>
+        <td></td>
+        <td>{totalSavingsQuantity.toFixed(2)} DKK</td>
+      </tr>
+    )}
+    <tr>
+      <td>Moms udgør</td>
+      <td></td>
+      <td>{totalTax.toFixed(2)} DKK</td>
+    </tr>
+    {discountedPrice < total && (
+      <tr>
+        <td>Da du har købt for over 300DKK sparer du</td>
+        <td></td>
+        <td>{totalDiscountedSavings.toFixed(2)} DKK</td>
+      </tr>
+    )}
+  </tbody>
+</table>
+ </div>
+
+
+
         <div className="actions">
           {cart.length > 0 && (
               <button className="clear-button" onClick={removeAllItems}>

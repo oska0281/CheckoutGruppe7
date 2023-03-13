@@ -173,6 +173,12 @@ button[type="submit"]:hover {
 }
 
 
+.summary-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 50px;
+  background-color: #fff;
+}
 .cart-summary {
   display: flex;
   flex-direction: column;
