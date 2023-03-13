@@ -14,7 +14,7 @@ function App() {
 
 
             <div>
-                <p className="Levering">Gratis levering på alle ordrer over 499Kr og 10% på alle ordrer over 300Kr</p>
+                <p className="Levering">Gratis levering på alle ordrer over 499DKK og 10% på alle ordrer over 300DKK</p>
                 <p className="Log-ind">Log ind</p>
             </div>
 
