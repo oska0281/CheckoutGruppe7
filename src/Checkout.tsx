@@ -162,10 +162,13 @@ const Checkout = (): JSX.Element => {
   };
 
 
+//TODO til render gør måske så indtast af navn mm. foregår på ny side
+  //TODO istedet for email checker med tegn så brug email checker api fx "mailboxlayer"
+  //TODO evt en side når man går fra første side til næste der forslår nye produkter ift hvad man har købt eller hakket af
   return (
       <div className="checkout-container">
         <h1>Din kurv</h1>
-        <table className="cart-table">
+      <table className="cart-table checkout-table">
           <thead>
           <tr>
             <th>Navn</th>
@@ -179,20 +182,20 @@ const Checkout = (): JSX.Element => {
               <tr key={item.id}>
                 <td>
                   {item.name}
-
-                        </td>
-                        <td>{item.price} {item.currency}</td>
-                        <td className="quantity-cell">
-                            <div className="quantity-buttons">
-                                <button onClick={() => addToCart(item.id)}>+</button>
-                                <span>{cart.find((i) => i.id === item.id)?.quantity ?? 0}</span>
-                                <button onClick={() => removeOne(item.id)}>-</button>
-                            </div>
-                            {(item.rebateQuantity && item.rebatePercent) && (
-                                <div className="rebate-message">
+                </td>
+                <td>{item.price} {item.currency}</td>
+                <td className="quantity-cell">
+                  <div className="quantity-buttons">
+                    <button onClick={() => addToCart(item.id)}>+</button>
+                    <span>{cart.find((i) => i.id === item.id)?.quantity ?? 0}</span>
+                    <button onClick={() => removeOne(item.id)}>-</button>
+                  </div>
+                  {(item.rebateQuantity && item.rebatePercent) && (
+                       <div className="rebate-message">
 
                                     {cart.find((i) => i.id === item.id)?.quantity === 0 && cart.length > 0 ? (
-                                        ''
+                                        <>
+                                        </>
                                     ) : (
                                         (item.rebateQuantity && item.rebatePercent) && (!cart.find((i) => i.id === item.id) || cart.find((i) => i.id === item.id)?.quantity! < item.rebateQuantity) ? (
                                             `Tilføj ${item.rebateQuantity - (cart.find((i) => i.id === item.id)?.quantity || 0)} mere for ${item.rebatePercent}% rabat`
@@ -204,81 +207,108 @@ const Checkout = (): JSX.Element => {
                             )}
                             <button className="remove-button" onClick={() => removeItem(item.id)}>Fjern</button>
                         </td>
-                        <td>
-                            {cart.find((i) => i.id === item.id) &&
-                                (subtotal(cart.find((i) => i.id === item.id)!) ?? item)}{" "}
-                            {item.currency}
-                        </td>
-                    </tr>
-                ))}
-                <tr>
-                    <td colSpan={3}>Subtotal inkl. moms</td>
-                    <td><strong>{discountedPrice.toFixed(2)} DKK</strong></td>
-                </tr>
-                {totalSavingsQuantity > 0 && (
-                    <tr>
-                        <td colSpan={3}>Penge sparet ved mængde-tilbud</td>
-                        <td>{totalSavingsQuantity} DKK</td>
-                    </tr>
+                <td>
+                  {cart.find((i) => i.id === item.id) &&
+                      (subtotal(cart.find((i) => i.id === item.id)!) ?? item)}{" "}
+                  {item.currency}
+                </td>
+              </tr>
+          ))}
+          </tbody>
+        </table>
 
-                )}
-                <tr>
-                    <td colSpan={3}>Moms udgør</td>
-                    <td>{totalTax.toFixed(2)} DKK</td>
-                </tr>
-                {discountedPrice < total && (
-                    <tr>
-                        <td colSpan={3}>Da du har købt for over 300DKK sparer du</td>
-                        <td>{totalDiscountedSavings.toFixed(2)} DKK</td>
-                    </tr>
-                )}
-                </tbody>
-            </table>
-            <div className="actions">
-                {cart.length > 0 && (
-                    <button className="clear-button" onClick={removeAllItems}>
-                        Fjern alle varer
-                    </button>
-                )}
-            </div>
-            <form>
-                <h2>Leveringsadresse</h2>
-                <label>
-                    Navn
-                    <input type="text" name="name" required/>
-                </label>
-                <label>
-                    Telefon
-                    <p>+45 <input type="tel" name="phone" placeholder='12 34 56 78' maxLength={8} minLength={8}
-                                  pattern="[0-9]" required/></p>
-                </label>
-                <label>
-                    E-mail
-                    <input type="email" name="email" placeholder='email@email.com'
-                           pattern='^\S+@\S+\.\S+$' required/>
-                </label>
-                <label>
-                    Adresse 1
-                    <input type="text" name="address1" required/>
-                </label>
-                <label>
-                    Adresse 2
-                    <input type="text" name="address2"/>
-                </label>
-                <label>
-                    Postnummer
-                    <input type="text" name="zipcode" required onChange={handleZipCodeChange}/>
-                    {zipCodeError && <span className="error">Ugyldigt postnummer</span>}
 
-                </label>
-                <label>
-                    By
-                    <input type="text" name="city" required/>
-                </label>
-                <label>
-                    Land
-                    <input type="text" name="country" value="Denmark" disabled/>
-                </label>
+
+ <div className="summary-table-container">
+    <table className="cart-table summary-table">
+  <thead>
+    <tr>
+      <th>Produkter</th>
+      <th>Antal</th>
+      <th>Pris</th>
+    </tr>
+  </thead>
+  <tbody>
+    {cart.map((item) => (
+      <tr key={item.id}>
+        <td>{item.name}</td>
+        <td>{item.quantity}</td>
+        <td>{subtotal(item).toFixed(2)} DKK</td>
+      </tr>
+    ))}
+    <tr>
+      <td>Subtotal inkl. moms</td>
+      <td></td>
+      <td><strong>{discountedPrice.toFixed(2)} DKK</strong></td>
+    </tr>
+    {totalSavingsQuantity > 0 && (
+      <tr>
+        <td>Penge sparet ved mængde-tilbud</td>
+        <td></td>
+        <td>{totalSavingsQuantity.toFixed(2)} DKK</td>
+      </tr>
+    )}
+    <tr>
+      <td>Moms udgør</td>
+      <td></td>
+      <td>{totalTax.toFixed(2)} DKK</td>
+    </tr>
+    {discountedPrice < total && (
+      <tr>
+        <td>Da du har købt for over 300DKK sparer du</td>
+        <td></td>
+        <td>{totalDiscountedSavings.toFixed(2)} DKK</td>
+      </tr>
+    )}
+  </tbody>
+</table>
+ </div>
+
+
+
+        <div className="actions">
+          {cart.length > 0 && (
+              <button className="clear-button" onClick={removeAllItems}>
+                Fjern alle varer
+              </button>
+          )}
+        </div>
+        <form>
+          <h2>Leveringsadresse</h2>
+          <label>
+            Navn
+            <input type="text" name="name" required/>
+          </label>
+          <label>
+            Telefon
+            <input type="tel" name="phone" required/>
+          </label>
+          <label>
+            E-mail
+            <input type="email" name="email" required/>
+          </label>
+          <label>
+            Adresse 1
+            <input type="text" name="address1" required/>
+          </label>
+          <label>
+            Adresse 2
+            <input type="text" name="address2"/>
+          </label>
+          <label>
+            Postnummer
+            <input type="text" name="zipcode" required onChange={handleZipCodeChange}/>
+            {zipCodeError && <span className="error">Ugyldigt postnummer</span>}
+
+          </label>
+          <label>
+            By
+            <input type="text" name="city" required/>
+          </label>
+          <label>
+            Land
+            <input type="text" name="country" value="Denmark" disabled/>
+          </label>
 
                 <h2>Faktureringsadresse</h2>
                 <label>

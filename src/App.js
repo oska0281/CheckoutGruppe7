@@ -16,7 +16,7 @@ function App() {
 
 
                 <div>
-                    <p className="Levering">Gratis levering på alle ordrer over 499,-</p>
+                    <p className="Levering">Gratis levering på alle ordrer over 499DKK og få 10% ved køb af over 300DKK-</p>
                   
                     <img className='Profile' src={profilePic} alt='profile'/>
                     <a className='Log-ind' href='login.html' target=''>Log ind</a>
