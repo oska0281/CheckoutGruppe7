@@ -19,7 +19,7 @@ type CartItem = Item & {
     rebateAmount?: number;
 };
 
-/*skal bruges til måske adressetjek
+/*skal bruges til adressetjek
 type Address = {
   country: string;
   zipCode: string;
@@ -135,11 +135,11 @@ const Checkout = (): JSX.Element => {
   */
 
 
-//zip tjekker
-    const validateZipCode = async (zipCode: string): Promise<boolean> => {
-        if (!zipCode) {
-            return false;
-        }
+//zip tjekker todo gør så der også bliver sat zip kode ind automatisk
+  const validateZipCode = async (zipCode: string): Promise<boolean> => {
+    if (!zipCode) {
+      return false;
+    }
 
         const response = await fetch(`https://api.dataforsyningen.dk/postnumre/${zipCode}`);
         const data = await response.json();
@@ -157,31 +157,31 @@ const Checkout = (): JSX.Element => {
             return;
         }
 
-        setZipCodeError(false);
-    };
+    setZipCodeError(false);
+  };
 
-    const handleZipCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setDeliveryAddress((prevState) => ({...prevState, zipCode: e.target.value}));
-    };
+  const handleZipCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDeliveryAddress((prevState) => ({...prevState, zipCode: e.target.value}));
+  };
 
 
-    return (
-        <div className="checkout-container">
-            <h1>Din kurv</h1>
-            <table className="cart-table">
-                <thead>
-                <tr>
-                    <th>Navn</th>
-                    <th>Pris</th>
-                    <th>Mængde</th>
-                    <th>Subtotal</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>{itemsData.map((item) => (
-                    <tr key={item.id}>
-                        <td>
-                            {item.name}
+  return (
+      <div className="checkout-container">
+        <h1>Din kurv</h1>
+        <table className="cart-table">
+          <thead>
+          <tr>
+            <th>Navn</th>
+            <th>Pris</th>
+            <th>Mængde</th>
+            <th>Subtotal</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>{itemsData.map((item) => (
+              <tr key={item.id}>
+                <td>
+                  {item.name}
 
                         </td>
                         <td>{item.price} {item.currency}</td>
@@ -196,6 +196,10 @@ const Checkout = (): JSX.Element => {
 
                                     {cart.find((i) => i.id === item.id)?.quantity === 0 && cart.length > 0 ? (
                                         <>
+                                            Tilføj {item.rebateQuantity} mere for {item.rebatePercent}% rabat
+                                            {item.upsellProductId && itemsData.find((i) => i.id === item.upsellProductId) && (
+                                                <button onClick={() => addToCart(item.upsellProductId!)}>Tilføj eventuelt {itemsData.find((i) => i.id === item.upsellProductId!)?.name}</button>
+                                            )}
                                         </>
                                     ) : (
                                         (item.rebateQuantity && item.rebatePercent) && cart.find((i) => i.id === item.id)?.quantity! < item.rebateQuantity! ? (
