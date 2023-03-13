@@ -183,7 +183,6 @@ const Checkout = (): JSX.Element => {
               <tr key={item.id}>
                 <td>
                   {item.name}
-
                 </td>
                 <td>{item.price} {item.currency}</td>
                 <td className="quantity-cell">
