@@ -59,10 +59,7 @@ const Checkout = (): JSX.Element => {
             const newCart = [...cart];
             const currentItem = newCart[index];
             currentItem.quantity += 1;
-            if (
-                currentItem.rebateQuantity &&
-                currentItem.quantity < currentItem.rebateQuantity
-            ) {
+            if (currentItem.rebateQuantity && currentItem.quantity < currentItem.rebateQuantity) {
                 currentItem.rebateAmount = 0;
             }
             setCart(newCart);
@@ -195,8 +192,7 @@ const Checkout = (): JSX.Element => {
                                 <div className="rebate-message">
 
                                     {cart.find((i) => i.id === item.id)?.quantity === 0 && cart.length > 0 ? (
-                                        <>
-                                        </>
+                                        ''
                                     ) : (
                                         (item.rebateQuantity && item.rebatePercent) && (!cart.find((i) => i.id === item.id) || cart.find((i) => i.id === item.id)?.quantity! < item.rebateQuantity) ? (
                                             `Tilføj ${item.rebateQuantity - (cart.find((i) => i.id === item.id)?.quantity || 0)} mere for ${item.rebatePercent}% rabat`
@@ -253,11 +249,12 @@ const Checkout = (): JSX.Element => {
                 </label>
                 <label>
                     Telefon
-                    <p>+45 <input type="tel" name="phone" placeholder='12 34 56 78' maxLength={11} minLength={8} pattern="[0-9]" required/></p>
+                    <p>+45 <input type="tel" name="phone" placeholder='12 34 56 78' maxLength={8} minLength={8}
+                                  pattern="[0-9]" required/></p>
                 </label>
                 <label>
                     E-mail
-                    <input type="email" name="email" required/>
+                    <input type="email" name="email" placeholder='email@email.com' pattern='^\S+@\S+\.\S+$' required/>
                 </label>
                 <label>
                     Adresse 1
@@ -289,11 +286,12 @@ const Checkout = (): JSX.Element => {
                 </label>
                 <label>
                     Telefon
-                    <input type="tel" name="billingPhone" required/>
+                    <p>+45 <input type="tel" name="phone" placeholder='12 34 56 78' maxLength={8} minLength={8}
+                                  pattern="[0-9]" required/></p>
                 </label>
                 <label>
                     E-mail
-                    <input type="email" name="billingEmail" required/>
+                    <input type="email" name="email" placeholder='email@email.com' pattern='^\S+@\S+\.\S+$' required/>
                 </label>
                 <label>
                     Adresse 1
